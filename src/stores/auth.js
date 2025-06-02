@@ -1,4 +1,4 @@
-export const userAuthStore = defineStore('auth', {
+export const useAuthStore = defineStore('auth', {
     state: () => ({}),
 
     getters: {},
