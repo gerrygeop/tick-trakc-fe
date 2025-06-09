@@ -25,8 +25,36 @@ export const useTicketStore = defineStore('ticket', {
             }
         },
 
-        async fetchTicket(code) {},
+        async fetchTicket(code) {
+            this.loading = true
 
-        async createTicket(payload) {},
+            try {
+                const response = await axiosInstance.get(`/ticket/${code}`)
+
+                return response.data.data
+            } catch (error) {
+                this.error = handleError(error)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async createTicketReply(payload) {
+            this.loading = true
+        },
+
+        async createTicketReply(code, payload) {
+            this.loading = true
+
+            try {
+                const response = await axiosInstance.post(`/ticket-reply/${code}`, payload)
+                this.success = response.data.message
+                return response.data.data
+            } catch (error) {
+                this.error = handleError(error)
+            } finally {
+                this.loading = false
+            }
+        },
     },
 })
