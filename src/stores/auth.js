@@ -14,9 +14,36 @@ export const useAuthStore = defineStore('auth', {
     getters: {},
 
     actions: {
-        async login(credentials) {},
+        async login(credentials) {
+            this.loading = true
 
-        async register(credentials) {},
+            try {
+                const response = await axiosInstance.post('/login', credentials)
+                this.success = response.data.message
+                const token = response.data.data.token
+                Cookies.set('token', token)
+                router.push({ name: 'app.dashboard' })
+            } catch (error) {
+                this.error = handleError(error)
+            } finally {
+                this.loading = false
+            }
+        },
+
+        async register(credentials) {
+            this.loading = true
+            try {
+                const response = await axiosInstance.post('/register', credentials)
+                this.success = response.data.message
+                const token = response.data.data.token
+                Cookies.set('token', token)
+                router.push({ name: 'app.dashboard' })
+            } catch (error) {
+                this.error = handleError(error)
+            } finally {
+                this.loading = false
+            }
+        },
 
         async logout() {
             this.loading = true
