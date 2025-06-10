@@ -8,7 +8,7 @@ import Login from '@/views/auth/Login.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import App from '@/layouts/App.vue'
 import AppDashboard from '@/views/app/AppDashboard.vue'
-import AppTicketDetail from '@/views/app/TicketDetial.vue'
+import AppTicketDetail from '@/views/app/TicketDetail.vue'
 import AppTicketCreate from '@/views/app/TicketCreate.vue'
 import Register from '@/views/auth/Register.vue'
 

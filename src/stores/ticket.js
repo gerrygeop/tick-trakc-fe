@@ -39,8 +39,19 @@ export const useTicketStore = defineStore('ticket', {
             }
         },
 
-        async createTicketReply(payload) {
+        async createTicket(payload) {
             this.loading = true
+
+            try {
+                const response = await axiosInstance.post('/ticket', payload)
+                this.success = response.data.message
+
+                router.push({ name: 'app.dashboard' })
+            } catch (error) {
+                this.error = handleError(error)
+            } finally {
+                this.loading = false
+            }
         },
 
         async createTicketReply(code, payload) {
