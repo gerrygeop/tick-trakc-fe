@@ -2,6 +2,7 @@
 import { onMounted, ref } from 'vue'
 import { useTicketStore } from '@/stores/ticket'
 import { storeToRefs } from 'pinia'
+import feather from 'feather-icons'
 
 const ticketStore = useTicketStore()
 const { success, error, loading } = storeToRefs(ticketStore)
@@ -17,7 +18,9 @@ const handleSubmit = async () => {
     await createTicket(form.value)
 }
 
-// onMounted(async () => {})
+onMounted(async () => {
+    feather.replace()
+})
 </script>
 
 <template>
@@ -33,7 +36,7 @@ const handleSubmit = async () => {
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-100">
         <div class="p-6 border-b border-gray-100">
-            <h1 class="text-2xl font-bold text-gray-800">Buat Tiker Baru</h1>
+            <h1 class="text-2xl font-bold text-gray-800">Buat Tiket Baru</h1>
             <p class="text-sm text-gray-500 mt-1">Isi form dibawah ini untuk membuat tiket</p>
         </div>
 
@@ -87,7 +90,7 @@ const handleSubmit = async () => {
                         class="relative flex cursor-pointer rounded-lg border"
                         :class="[
                             form.priority === 'low'
-                                ? 'border-green-200 bg-green-50'
+                                ? 'border-green-400 bg-green-100'
                                 : 'border-gray-200',
                         ]"
                     >
@@ -101,7 +104,7 @@ const handleSubmit = async () => {
                             </div>
 
                             <div class="shrink-0 text-green-600" v-show="form.priority === 'low'">
-                                <i data-feather="check-cirlce" class="w-6 h-6"></i>
+                                <i data-feather="check-circle" class="w-6 h-6"></i>
                             </div>
                         </div>
                     </label>
@@ -110,7 +113,7 @@ const handleSubmit = async () => {
                         class="relative flex cursor-pointer rounded-lg border"
                         :class="[
                             form.priority === 'medium'
-                                ? 'border-yellow-200 bg-yellow-50'
+                                ? 'border-yellow-400 bg-yellow-100'
                                 : 'border-gray-200',
                         ]"
                     >
@@ -132,7 +135,7 @@ const handleSubmit = async () => {
                                 class="shrink-0 text-yellow-600"
                                 v-show="form.priority === 'medium'"
                             >
-                                <i data-feather="check-cirlce" class="w-6 h-6"></i>
+                                <i data-feather="check-circle" class="w-6 h-6"></i>
                             </div>
                         </div>
                     </label>
@@ -141,7 +144,7 @@ const handleSubmit = async () => {
                         class="relative flex cursor-pointer rounded-lg border"
                         :class="[
                             form.priority === 'high'
-                                ? 'border-red-200 bg-red-50'
+                                ? 'border-red-400 bg-red-100'
                                 : 'border-gray-200',
                         ]"
                     >
@@ -155,11 +158,29 @@ const handleSubmit = async () => {
                             </div>
 
                             <div class="shrink-0 text-red-600" v-show="form.priority === 'high'">
-                                <i data-feather="check-cirlce" class="w-6 h-6"></i>
+                                <i data-feather="check-circle" class="w-6 h-6"></i>
                             </div>
                         </div>
                     </label>
                 </div>
+            </div>
+
+            <div class="flex items-center justify-end space-x-4">
+                <button
+                    type="button"
+                    class="px-6 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
+                >
+                    Batal
+                </button>
+
+                <button
+                    type="submit"
+                    class="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
+                >
+                    <i data-feather="send" class="w-4 h-4 inline-block mr-2"></i>
+                    <span v-if="!loading">Kirim Tiket</span>
+                    <span v-else>Loading...</span>
+                </button>
             </div>
         </form>
     </div>

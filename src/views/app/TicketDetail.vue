@@ -5,10 +5,11 @@ import { storeToRefs } from 'pinia'
 import { useRoute } from 'vue-router'
 import { capitalize } from 'lodash'
 import { DateTime } from 'luxon'
+import feather from 'feather-icons'
 
 const ticketStore = useTicketStore()
 const { success, error, loading } = storeToRefs(ticketStore)
-const { fetchTicket, createTicketreply } = ticketStore
+const { fetchTicket, createTicketReply } = ticketStore
 
 const route = useRoute()
 
@@ -25,7 +26,7 @@ const fetchTicketDetail = async () => {
 }
 
 const handleSubmit = async () => {
-    await createTicketreply(route.params.code, form.value)
+    await createTicketReply(route.params.code, form.value)
 
     error.value = null
     form.value.content = null
@@ -35,6 +36,8 @@ const handleSubmit = async () => {
 
 onMounted(async () => {
     await fetchTicketDetail()
+
+    feather.replace()
 })
 </script>
 
@@ -72,24 +75,30 @@ onMounted(async () => {
                         <span
                             class="px-3 py-1 text-xs font-medium rounded-full"
                             :class="{
-                                'text-red-700 bg-red-100': ticket.status === 'high',
-                                'text-yellow-700 bg-yellow-100': ticket.status === 'medium',
-                                'text-green-700 bg-green-100': ticket.status === 'low',
+                                'text-red-700 bg-red-100': ticket.priority === 'high',
+                                'text-yellow-700 bg-yellow-100': ticket.priority === 'medium',
+                                'text-green-700 bg-green-100': ticket.priority === 'low',
                             }"
                         >
                             {{ capitalize(ticket.priority) }}
                         </span>
                         <span class="text-sm text-gray-500"> #{{ ticket.code }} </span>
-                        <span class="text-sm text-gray-500">
-                            Dibuat pada
-                            {{
-                                DateTime.fromISO(ticket.created_at).toFormat('dd MMMM yyyy, HH:mm')
-                            }}
-                        </span>
+                        <div class="text-sm text-gray-500">
+                            <i data-feather="clock" class="w-4 h-4 inline-block"></i>
+                            <span>
+                                Dibuat pada
+                                {{
+                                    DateTime.fromISO(ticket.created_at).toFormat(
+                                        'dd MMMM yyyy, HH:mm',
+                                    )
+                                }}
+                            </span>
+                        </div>
                     </div>
                 </div>
 
                 <button
+                    type="button"
                     class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
                 >
                     <i data-feather="download" class="w-4 h-4 inline-block mr-2"></i>
@@ -154,6 +163,7 @@ onMounted(async () => {
                 <div class="flex items-center justify-between">
                     <div class="flex items-center space-x-4">
                         <button
+                            type="button"
                             class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
                         >
                             <i data-feather="paperclip" class="w-4 h-4 inline-block mr-2"></i>
@@ -162,6 +172,7 @@ onMounted(async () => {
                     </div>
 
                     <button
+                        type="submit"
                         class="px-6 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
                     >
                         <i data-feather="send" class="w-4 h-4 inline-block mr-2"></i>

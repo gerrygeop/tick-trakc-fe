@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import { debounce } from 'lodash'
 import { DateTime } from 'luxon'
 import { capitalize } from 'lodash'
+import feather from 'feather-icons'
 
 const ticketStore = useTicketStore()
 const { tickets, success } = storeToRefs(ticketStore)
@@ -27,19 +28,21 @@ watch(
 
 onMounted(async () => {
     await fetchTickets()
+
+    feather.replace()
 })
 </script>
 
 <template>
-    <div class="flex items-center justify-between mb-8">
-        <div>
+    <div class="flex flex-col sm:flex-row items-center justify-between mb-8 gap-y-4 sm:gap-y-0">
+        <div class="text-center sm:text-start">
             <h1 class="text-2xl font-bold text-gray-800">Tiket Saya</h1>
-            <p class="text-sm text-gray-500 mt-1">Kelola dan pantau status tiket saya</p>
+            <p class="text-sm text-gray-500 sm:mt-1">Kelola dan pantau status tiket saya</p>
         </div>
 
         <RouterLink
             :to="{ name: 'app.ticket.create' }"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
+            class="w-full sm:w-auto inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
         >
             <i data-feather="plus" class="w-4 h-4 mr-2"></i>
             Buat Tiket Baru
@@ -62,14 +65,14 @@ onMounted(async () => {
     </div>
 
     <div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-6">
-        <div class="pl-4">
+        <div class="p-4">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="relative">
                     <input
                         type="text"
                         placeholder="Cari..."
                         v-model="filters.search"
-                        class="w-full pl-10 pr-4 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                        class="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     />
                     <i
                         data-feather="search"
@@ -119,12 +122,17 @@ onMounted(async () => {
                 :to="{ name: 'app.ticket.detail', params: { code: ticket.code } }"
                 class="block p-6"
             >
-                <div class="flex items-start justify-between">
-                    <div class="flex-1">
-                        <div class="flex items-center space-x-3">
-                            <h3 class="text-lg font-semibold text-gray-800">{{ ticket.title }}</h3>
+                <div>
+                    <div
+                        class="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-y-1 sm:gap-y-0 space-x-3"
+                    >
+                        <h3 class="text-lg font-semibold text-gray-800">
+                            {{ ticket.title }}
+                        </h3>
+
+                        <div class="flex items-center space-x-2">
                             <span
-                                class="px-3 py-1 text-xs font-medium rounded-full"
+                                class="px-3 py-1 text-xs font-medium rounded-lg"
                                 :class="{
                                     'text-blue-700 bg-blue-100': ticket.status === 'open',
                                     'text-yellow-700 bg-yellow-100': ticket.status === 'onprogress',
@@ -136,44 +144,45 @@ onMounted(async () => {
                             </span>
 
                             <span
-                                class="px-3 py-1 text-xs font-medium rounded-full"
+                                class="px-3 py-1 text-xs font-medium rounded-lg"
                                 :class="{
-                                    'text-red-700 bg-red-100': ticket.status === 'high',
-                                    'text-yellow-700 bg-yellow-100': ticket.status === 'medium',
-                                    'text-green-700 bg-green-100': ticket.status === 'low',
+                                    'text-red-700 bg-red-100': ticket.priority === 'high',
+                                    'text-yellow-700 bg-yellow-100': ticket.priority === 'medium',
+                                    'text-green-700 bg-green-100': ticket.priority === 'low',
                                 }"
                             >
                                 {{ capitalize(ticket.priority) }}
                             </span>
                         </div>
-
-                        <p class="text-sm text-gray-500 mt-1">
-                            #{{ ticket.code }} * Dibuat pada
-                            {{
-                                DateTime.formISO(ticket.created_at).toFormat('dd MMMM yyyy, HH:mm')
-                            }}
-                        </p>
-                        <p class="text-sm text-gray-600 mt-1">
-                            {{ ticket.description }}
-                        </p>
-
-                        <div class="mt-4 flex items-center space-x-4">
-                            <div class="flex items-center text-sm text-gray-500">
-                                <i data-feather="message-square" class="w-4 h-4 mr-1"></i>
-                                <span>{{ ticket.ticket_replies.length }} balasan</span>
-                            </div>
-                            <div class="flex items-center text-sm text-gray-500">
-                                <i data-feather="clock" class="w-4 h-4 mr-1"></i>
-                                <span>
-                                    Terakhir diupdate
-                                    {{ DateTime.fromISO(ticket.updated_at)toFormat('dd MMMM yyyy, HH:mm') }}</span
-                                >
-                            </div>
-                        </div>
                     </div>
 
-                    <div class="ml-4">
-                        <i data-feather="chevron-right" class="w-5 h-5 text-gray-400"></i>
+                    <p class="text-sm text-gray-500 mt-2 sm:mt-1">
+                        #{{ ticket.code }} | Dibuat pada
+                        {{ DateTime.fromISO(ticket.created_at).toFormat('dd MMMM yyyy, HH:mm') }}
+                    </p>
+
+                    <p class="text-base text-gray-700 mt-2 sm:mt-1">
+                        {{ ticket.description }}
+                    </p>
+
+                    <div
+                        class="mt-4 flex flex-col sm:flex-row items-start sm:items-center space-x-4 text-gray-500 text-sm"
+                    >
+                        <div class="shrink-0 flex items-end">
+                            <i data-feather="message-square" class="w-4 h-4 inline-block mr-1"></i>
+                            <span>{{ ticket.ticket_replies.length }} balasan</span>
+                        </div>
+                        <div class="shrink-0 flex items-end">
+                            <i data-feather="clock" class="w-4 h-4 mr-1"></i>
+                            <span>
+                                Terakhir diupdate
+                                {{
+                                    DateTime.fromISO(ticket.updated_at).toFormat(
+                                        'dd MMMM yyyy, HH:mm',
+                                    )
+                                }}</span
+                            >
+                        </div>
                     </div>
                 </div>
             </RouterLink>
