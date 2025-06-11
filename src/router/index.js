@@ -25,7 +25,7 @@ const router = createRouter({
                     component: AppDashboard,
                     meta: {
                         requiresAuth: true,
-                        title: Dashboard,
+                        title: 'Dashboard',
                     },
                 },
                 {
@@ -50,7 +50,7 @@ const router = createRouter({
             children: [
                 {
                     path: 'dashboard',
-                    name: 'admin.dashbaord',
+                    name: 'admin.dashboard',
                     component: Dashboard,
                     meta: {
                         requiresAuth: true,
@@ -114,8 +114,14 @@ router.beforeEach(async (to, from, next) => {
             next({ name: 'login' })
         }
     } else if (to.meta.requiresUnauth && authStore.token) {
-        next({ name: 'dashboard' })
+        if (authStore.user?.role === 'admin') {
+            next({ name: 'admin.dashboard' })
+        } else {
+            next({ name: 'app.dashboard' })
+        }
     } else {
         next()
     }
 })
+
+export default router
