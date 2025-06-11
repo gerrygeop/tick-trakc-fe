@@ -2,6 +2,7 @@ import { handleError } from '@/helpers/errorHelper'
 import { axiosInstance } from '@/plugins/axios'
 import Cookies from 'js-cookie'
 import router from '@/router'
+import { defineStore } from 'pinia'
 
 export const useAuthStore = defineStore('auth', {
     state: () => ({
@@ -11,7 +12,9 @@ export const useAuthStore = defineStore('auth', {
         success: null,
     }),
 
-    getters: {},
+    getters: {
+        token: () => Cookies.get('token'),
+    },
 
     actions: {
         async login(credentials) {
@@ -71,6 +74,15 @@ export const useAuthStore = defineStore('auth', {
             }
         },
 
-        async checkAuth() {},
+        async checkAuth() {
+            try {
+                const res = await axiosInstance.get('/me') // sesuaikan endpoint
+                this.user = res.data.user
+            } catch (error) {
+                Cookies.remove('token')
+                this.error = handleError(error)
+                throw error
+            }
+        },
     },
 })
