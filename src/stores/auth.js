@@ -77,7 +77,8 @@ export const useAuthStore = defineStore('auth', {
         async checkAuth() {
             try {
                 const res = await axiosInstance.get('/me') // sesuaikan endpoint
-                this.user = res.data.user
+
+                this.user = res.data.data
             } catch (error) {
                 Cookies.remove('token')
                 this.error = handleError(error)
