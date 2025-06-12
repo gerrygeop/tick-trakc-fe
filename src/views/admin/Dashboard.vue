@@ -5,6 +5,8 @@ import { useDashboardStore } from '@/stores/dashboard'
 import { useTicketStore } from '@/stores/ticket'
 import { storeToRefs } from 'pinia'
 import { DateTime } from 'luxon'
+import { capitalize } from 'lodash'
+import feather from 'feather-icons'
 
 const dashboardStore = useDashboardStore()
 const { statistic } = storeToRefs(dashboardStore)
@@ -69,11 +71,9 @@ onMounted(async () => {
             },
         })
     }
-})
 
-function capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
-}
+    feather.replace()
+})
 </script>
 
 <template>
@@ -92,7 +92,7 @@ function capitalize(str) {
             </div>
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-green-500 flex items-center">
-                    <i data-feather="trending-top" class="w-4 h-4 mr-1"></i>
+                    <i data-feather="trending-up" class="w-4 h-4 mr-1"></i>
                     %12
                 </span>
                 <span class="text-gray-500 ml-2">vs bulan lalu</span>
@@ -107,13 +107,13 @@ function capitalize(str) {
                         {{ statistic?.active_tickets }}
                     </h3>
                 </div>
-                <div class="p-3 bg-blue-50 rounded-lg">
-                    <i data-feather="tag" class="w-6 h-6 text-blue-600"></i>
+                <div class="p-3 bg-yellow-50 rounded-lg">
+                    <i data-feather="clock" class="w-6 h-6 text-yellow-600"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
-                <span class="text-green-500 flex items-center">
-                    <i data-feather="trending-top" class="w-4 h-4 mr-1"></i>
+                <span class="text-red-500 flex items-center">
+                    <i data-feather="trending-down" class="w-4 h-4 mr-1"></i>
                     %12
                 </span>
                 <span class="text-gray-500 ml-2">vs bulan lalu</span>
@@ -128,13 +128,13 @@ function capitalize(str) {
                         {{ statistic?.resolved_tickets }}
                     </h3>
                 </div>
-                <div class="p-3 bg-blue-50 rounded-lg">
-                    <i data-feather="tag" class="w-6 h-6 text-blue-600"></i>
+                <div class="p-3 bg-green-50 rounded-lg">
+                    <i data-feather="check-circle" class="w-6 h-6 text-green-600"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-green-500 flex items-center">
-                    <i data-feather="trending-top" class="w-4 h-4 mr-1"></i>
+                    <i data-feather="trending-up" class="w-4 h-4 mr-1"></i>
                     %12
                 </span>
                 <span class="text-gray-500 ml-2">vs bulan lalu</span>
@@ -149,13 +149,13 @@ function capitalize(str) {
                         {{ statistic?.avg_resolution_time }}
                     </h3>
                 </div>
-                <div class="p-3 bg-blue-50 rounded-lg">
-                    <i data-feather="tag" class="w-6 h-6 text-blue-600"></i>
+                <div class="p-3 bg-purple-50 rounded-lg">
+                    <i data-feather="clock" class="w-6 h-6 text-purple-600"></i>
                 </div>
             </div>
             <div class="mt-4 flex items-center text-sm">
                 <span class="text-green-500 flex items-center">
-                    <i data-feather="trending-top" class="w-4 h-4 mr-1"></i>
+                    <i data-feather="trending-up" class="w-4 h-4 mr-1"></i>
                     %12
                 </span>
                 <span class="text-gray-500 ml-2">vs bulan lalu</span>
