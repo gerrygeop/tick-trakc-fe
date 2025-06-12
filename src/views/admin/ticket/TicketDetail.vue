@@ -2,9 +2,10 @@
 import { onMounted, ref } from 'vue'
 import { useTicketStore } from '@/stores/ticket'
 import { storeToRefs } from 'pinia'
-import { capitalize } from 'vue'
+import { capitalize } from 'lodash'
 import { DateTime } from 'luxon'
 import { useRoute } from 'vue-router'
+import feather from 'feather-icons'
 
 const route = useRoute()
 
@@ -29,6 +30,9 @@ const handleSubmit = async () => {
     await createTicketReply(route.params.code, form.value)
 
     await fetchTicketDetail()
+
+    form.value.stauts = ''
+    form.value.content = null
 }
 
 onMounted(async () => {
@@ -60,9 +64,9 @@ onMounted(async () => {
                             <span
                                 class="px-3 py-1 text-xs font-medium rounded-full"
                                 :class="{
-                                    'text-red-700 bg-red-100': ticket.status === 'high',
-                                    'text-yellow-700 bg-yellow-100': ticket.status === 'medium',
-                                    'text-green-700 bg-green-100': ticket.status === 'low',
+                                    'text-red-700 bg-red-100': ticket.priority === 'high',
+                                    'text-yellow-700 bg-yellow-100': ticket.priority === 'medium',
+                                    'text-green-700 bg-green-100': ticket.priority === 'low',
                                 }"
                             >
                                 {{ capitalize(ticket.priority) }}
@@ -72,23 +76,21 @@ onMounted(async () => {
                                 Dilaporkan oleh {{ ticket.user?.name }}
                             </span>
                         </div>
-                        <div class="flex items-center justify-end space-x-4">
-                            <button
-                                class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
-                            >
-                                <i data-feather="download" class="w-4 h-4 inline-block mr-2"></i>
-                                Lampiran
-                            </button>
-                            <button
-                                class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
-                            >
-                                <i
-                                    data-feather="check-circle"
-                                    class="w-4 h-4 inline-block mr-2"
-                                ></i>
-                                Selesaikan Tiket
-                            </button>
-                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-end space-x-4">
+                        <button
+                            class="px-4 py-2 border border-gray-200 rounded-lg text-sm text-gray-600 hover:bg-gray-50"
+                        >
+                            <i data-feather="download" class="w-4 h-4 inline-block mr-2"></i>
+                            Lampiran
+                        </button>
+                        <button
+                            class="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700"
+                        >
+                            <i data-feather="check-circle" class="w-4 h-4 inline-block mr-2"></i>
+                            Selesaikan Tiket
+                        </button>
                     </div>
                 </div>
             </div>
@@ -136,7 +138,7 @@ onMounted(async () => {
                 </div>
 
                 <div class="p-6 border-t border-gray-100">
-                    <h4 class="text-sm font-medium text-gray-800 mb-4">Tambah Jawaban</h4>
+                    <h4 class="text-sm font-semibold text-gray-800 mb-4">Tambah Jawaban</h4>
 
                     <form @submit.prevent="handleSubmit" class="space-y-4">
                         <div class="grid grid-cols-1 gap-4">

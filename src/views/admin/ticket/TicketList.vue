@@ -4,6 +4,7 @@ import { useTicketStore } from '@/stores/ticket'
 import { storeToRefs } from 'pinia'
 import { capitalize, debounce } from 'lodash'
 import { DateTime } from 'luxon'
+import feather from 'feather-icons'
 
 const ticketStore = useTicketStore()
 const { tickets } = storeToRefs(ticketStore)
@@ -26,6 +27,8 @@ watch(
 
 onMounted(async () => {
     await fetchTickets()
+
+    feather.replace()
 })
 </script>
 
@@ -162,9 +165,10 @@ onMounted(async () => {
                                 <span
                                     class="px-3 py-1 text-xs font-medium rounded-full"
                                     :class="{
-                                        'text-red-700 bg-red-100': ticket.status === 'high',
-                                        'text-yellow-700 bg-yellow-100': ticket.status === 'medium',
-                                        'text-green-700 bg-green-100': ticket.status === 'low',
+                                        'text-red-700 bg-red-100': ticket.priority === 'high',
+                                        'text-yellow-700 bg-yellow-100':
+                                            ticket.priority === 'medium',
+                                        'text-green-700 bg-green-100': ticket.priority === 'low',
                                     }"
                                 >
                                     {{ capitalize(ticket.priority) }}
@@ -183,7 +187,7 @@ onMounted(async () => {
                                         name: 'admin.ticket.detail',
                                         params: { code: ticket.code },
                                     }"
-                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-lg"
+                                    class="flex items-center px-3 py-2 bg-blue-500 text-white text-sm leading-4 font-medium rounded-lg"
                                 >
                                     <i data-feather="message-square" class="w-4 h-4 mr-2"></i>
                                     Jawab
