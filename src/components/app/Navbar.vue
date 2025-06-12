@@ -19,14 +19,14 @@ const handleLogout = async () => {
 </script>
 
 <template>
-    <nav class="bg-white shadow-sm">
+    <nav class="bg-white shadow-sm z-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <a href="#" class="flex items-center">
+                    <RouterLink :to="{ name: 'app.dashboard' }" class="flex items-center">
                         <i data-feather="activity" class="w-8 h-8 text-blue-600"></i>
                         <span class="ml-2 text-xl font-bold text-blue-600">TickTrack</span>
-                    </a>
+                    </RouterLink>
                 </div>
 
                 <div class="flex items-center space-x-4">
@@ -73,13 +73,13 @@ const handleLogout = async () => {
 
                             <div class="border-t border-gray-100 my-1"></div>
 
-                            <a
-                                href="#"
+                            <button
+                                type="button"
                                 @click="handleLogout"
-                                class="block- px-4 py-2 text-red-600 hover:bg-gray-50"
+                                class="w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-50 cursor-pointer"
                             >
                                 Keluar
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
